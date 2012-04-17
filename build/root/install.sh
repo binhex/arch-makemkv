@@ -148,6 +148,9 @@ export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins/platforms
 
 # env vars required to enable menu icons for makemkv (also requires breeze-icons package)
 export KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true
+
+# change date for container, current beta key expires 2nd Nov 2021
+#date +%Y%m%d -s "20100101"
 EOF
 
 # replace permissions placeholder string with contents of file (here doc)
