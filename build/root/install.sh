@@ -61,7 +61,7 @@ rm /tmp/startcmd_heredoc
 ####
 
 cat <<'EOF' > /tmp/menu_heredoc
-	<item label="makemkv">
+	<item label="MakeMKV">
 	<action name="Execute">
 	  <command>dbus-launch makemkv</command>
 	  <startupnotify>
@@ -78,9 +78,21 @@ sed -i '/<!-- APPLICATIONS_PLACEHOLDER -->/{
 }' /home/nobody/.config/openbox/menu.xml
 rm /tmp/menu_heredoc
 
-# env vars
+# config makemkv
 ####
 
+#cat <<'EOF' > /tmp/config_heredoc
+# create soft link to /home/nobody/.MakeMKV folder storing makemkv general settings
+echo "[info] Creating soft link from /config/makemkv/.MakeMKV to /home/nobody/.MakeMKV..."
+mkdir -p /config/makemkv/.MakeMKV ; rm -rf /home/nobody/.MakeMKV ; ln -s /config/makemkv/.MakeMKV/ /home/nobody/
+EOF
+
+# replace config placeholder string with contents of file (here doc)
+sed -i '/# CONFIG_PLACEHOLDER/{
+	s/# CONFIG_PLACEHOLDER//g
+	r /tmp/config_heredoc
+}' /home/nobody/start.sh
+rm /tmp/config_heredoc
 
 # container perms
 ####

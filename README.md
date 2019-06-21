@@ -1,6 +1,6 @@
 **Application**
 
-[makemkv](https://makemkv.com/)
+[MakeMKV](https://makemkv.com/)
 
 **Description**
 
@@ -8,7 +8,7 @@ MakeMKV is your one-click solution to convert video that you own into free and p
 
 **Build notes**
 
-Latest stable makemkv release from Arch Linux.
+Latest stable MakeMKV release from Arch Linux.
 
 **Usage**
 ```
