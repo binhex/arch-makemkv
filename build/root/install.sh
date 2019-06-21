@@ -81,7 +81,7 @@ rm /tmp/menu_heredoc
 # config makemkv
 ####
 
-#cat <<'EOF' > /tmp/config_heredoc
+cat <<'EOF' > /tmp/config_heredoc
 # create soft link to /home/nobody/.MakeMKV folder storing makemkv general settings
 echo "[info] Creating soft link from /config/makemkv/.MakeMKV to /home/nobody/.MakeMKV..."
 mkdir -p /config/makemkv/.MakeMKV ; rm -rf /home/nobody/.MakeMKV ; ln -s /config/makemkv/.MakeMKV/ /home/nobody/
