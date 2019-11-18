@@ -42,7 +42,7 @@ source aur.sh
 ###
 
 # overwrite novnc 16x16 icon with application specific 16x16 icon (used by bookmarks and favorites)
-cp /home/nobody/novnc-16x16.png /usr/share/novnc/app/images/icons/
+cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 
 cat <<'EOF' > /tmp/startcmd_heredoc
 # launch makemkv (we cannot simply call /usr/bin/makemkv otherwise it wont run on startup)
@@ -98,7 +98,7 @@ rm /tmp/config_heredoc
 ####
 
 # define comma separated list of paths
-install_paths="/tmp,/usr/share/themes,/home/nobody,/usr/share/novnc,/usr/share/applications,/etc/xdg"
+install_paths="/tmp,/usr/share/themes,/home/nobody,/usr/share/webapps/novnc,/usr/share/applications,/etc/xdg"
 
 # split comma separated string into list for install paths
 IFS=',' read -ra install_paths_list <<< "${install_paths}"
