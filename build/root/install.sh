@@ -33,7 +33,7 @@ fi
 ####
 
 # define aur packages
-aur_packages="makemkv ccextractor"
+aur_packages="websockify makemkv ccextractor"
 
 # call aur install script (arch user repo)
 source aur.sh
