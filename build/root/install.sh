@@ -82,9 +82,14 @@ rm /tmp/menu_heredoc
 ####
 
 cat <<'EOF' > /tmp/config_heredoc
-# create soft link to /home/nobody/.MakeMKV folder storing makemkv general settings
-echo "[info] Creating soft link from /config/makemkv/.MakeMKV to /home/nobody/.MakeMKV..."
-mkdir -p /config/makemkv/.MakeMKV ; rm -rf /home/nobody/.MakeMKV ; ln -s /config/makemkv/.MakeMKV/ /home/nobody/
+# delme 10/12/2020
+# this code moves any existing makemkv config over to the new /config/home folder
+cp -R /config/makemkv/.MakeMKV/ /config/home/ && rm -rf /config/makemkv/
+# /delme 10/12/2020
+
+echo "[info] Creating soft link from /config/home/.MakeMKV to /home/nobody/.MakeMKV..."
+mkdir -p /config/home/.MakeMKV ; rm -rf /home/nobody/.MakeMKV ; ln -s /config/home/.MakeMKV/ /home/nobody/
+
 EOF
 
 # replace config placeholder string with contents of file (here doc)
