@@ -18,15 +18,18 @@ mv /tmp/scripts-master/shell/arch/docker/*.sh /usr/local/bin/
 # pacman packages
 ####
 
+# call pacman db and package updater script
+source upd.sh
+
 # define pacman packages
 pacman_packages="usbutils"
 
-# do not update coreutils - fixes permission denied issue when building on docker hub
-# https://github.com/archlinux/archlinux-docker/issues/32
-pacman_ignore_packages="coreutils"
+if [[ ! -z "${pacman_packages}" ]]; then
 
-# call pacman db and package updater script
-source upd.sh
+	echo "[info] Installing pacman package(s) '${pacman_packages}'"	
+	pacman -S --needed "${pacman_packages}" --noconfirm
+
+fi
 
 # aur packages
 ####
