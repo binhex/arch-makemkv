@@ -3,17 +3,7 @@
 # exit script if return code != 0
 set -e
 
-# build scripts
-####
-
-# download build scripts from github
-curl --connect-timeout 5 --max-time 600 --retry 5 --retry-delay 0 --retry-max-time 60 -o /tmp/scripts-master.zip -L https://github.com/binhex/scripts/archive/master.zip
-
-# unzip build scripts
-unzip /tmp/scripts-master.zip -d /tmp
-
-# move shell scripts to /root
-mv /tmp/scripts-master/shell/arch/docker/*.sh /usr/local/bin/
+# note do NOT download build scripts - inherited from int script with envvars common defined
 
 # detect image arch
 ####
@@ -42,7 +32,7 @@ pacman_packages="usbutils"
 
 if [[ ! -z "${pacman_packages}" ]]; then
 
-	echo "[info] Installing pacman package(s) '${pacman_packages}'"	
+	echo "[info] Installing pacman package(s) '${pacman_packages}'"
 	pacman -S --needed "${pacman_packages}" --noconfirm
 
 fi
@@ -72,7 +62,7 @@ EOF
 sed -i '/# STARTCMD_PLACEHOLDER/{
 	s/# STARTCMD_PLACEHOLDER//g
 	r /tmp/startcmd_heredoc
-}' /home/nobody/start.sh
+}' /usr/local/bin/start.sh
 rm /tmp/startcmd_heredoc
 
 # config openbox
@@ -114,7 +104,7 @@ EOF
 sed -i '/# CONFIG_PLACEHOLDER/{
 	s/# CONFIG_PLACEHOLDER//g
 	r /tmp/config_heredoc
-}' /home/nobody/start.sh
+}' /usr/local/bin/start.sh
 rm /tmp/config_heredoc
 
 # container perms
