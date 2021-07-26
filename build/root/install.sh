@@ -86,27 +86,6 @@ sed -i '/<!-- APPLICATIONS_PLACEHOLDER -->/{
 }' /home/nobody/.config/openbox/menu.xml
 rm /tmp/menu_heredoc
 
-# config makemkv
-####
-
-cat <<'EOF' > /tmp/config_heredoc
-# delme 10/12/2020
-# this code moves any existing makemkv config over to the new /config/home folder
-cp -R /config/makemkv/.MakeMKV/ /config/home/ && rm -rf /config/makemkv/
-# /delme 10/12/2020
-
-echo "[info] Creating soft link from /config/home/.MakeMKV to /home/nobody/.MakeMKV..."
-mkdir -p /config/home/.MakeMKV ; rm -rf /home/nobody/.MakeMKV ; ln -s /config/home/.MakeMKV/ /home/nobody/
-
-EOF
-
-# replace config placeholder string with contents of file (here doc)
-sed -i '/# CONFIG_PLACEHOLDER/{
-	s/# CONFIG_PLACEHOLDER//g
-	r /tmp/config_heredoc
-}' /usr/local/bin/start.sh
-rm /tmp/config_heredoc
-
 # container perms
 ####
 
@@ -166,9 +145,6 @@ sed -i '/# PERMISSIONS_PLACEHOLDER/{
 	r /tmp/permissions_heredoc
 }' /usr/local/bin/init.sh
 rm /tmp/permissions_heredoc
-
-# env vars
-####
 
 # cleanup
 cleanup.sh
