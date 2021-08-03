@@ -57,6 +57,14 @@ aur_packages="makemkv ccextractor"
 # call aur install script (arch user repo)
 source aur.sh
 
+# github packages
+####
+
+install_path="/tmp"
+
+# download faketime from branch master
+github.sh --install-path "${install_path}" --github-owner 'wolfcw' --github-repo 'libfaketime' --query-type 'release' --download-branch 'master' --compile-src 'make install'
+
 # config novnc
 ###
 
@@ -66,7 +74,7 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 cat <<'EOF' > /tmp/startcmd_heredoc
 # launch makemkv (we cannot simply call /usr/bin/makemkv otherwise it wont run on startup)
 # note failure to launch makemkv in the below manner will result in the classic xcb missing error
-dbus-run-session -- makemkv
+/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-run-session -- makemkv'
 EOF
 
 # replace startcmd placeholder string with contents of file (here doc)
@@ -80,14 +88,14 @@ rm /tmp/startcmd_heredoc
 ####
 
 cat <<'EOF' > /tmp/menu_heredoc
-	<item label="MakeMKV">
-	<action name="Execute">
-	  <command>dbus-launch makemkv</command>
-	  <startupnotify>
-		<enabled>yes</enabled>
-	  </startupnotify>
-	</action>
-	</item>
+    <item label="MakeMKV">
+    <action name="Execute">
+      <command>/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-launch makemkv'</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+    </item>
 EOF
 
 # replace menu placeholder string with contents of file (here doc)
@@ -148,9 +156,6 @@ export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins/platforms
 
 # env vars required to enable menu icons for makemkv (also requires breeze-icons package)
 export KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true
-
-# change date for container, current beta key expires 2nd Nov 2021
-#date +%Y%m%d -s "20100101"
 EOF
 
 # replace permissions placeholder string with contents of file (here doc)
