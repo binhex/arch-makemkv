@@ -74,7 +74,11 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 cat <<'EOF' > /tmp/startcmd_heredoc
 # launch makemkv (we cannot simply call /usr/bin/makemkv otherwise it wont run on startup)
 # note failure to launch makemkv in the below manner will result in the classic xcb missing error
-/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-run-session -- makemkv'
+if [[ -n "${EXTEND_TIME}" ]]; then
+	/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-run-session -- makemkv'
+else
+	dbus-run-session -- makemkv
+fi
 EOF
 
 # replace startcmd placeholder string with contents of file (here doc)
@@ -86,18 +90,29 @@ rm /tmp/startcmd_heredoc
 
 # config openbox
 ####
-
+if [[ -n "${EXTEND_TIME}" ]]; then
 cat <<'EOF' > /tmp/menu_heredoc
-    <item label="MakeMKV">
-    <action name="Execute">
-      <command>/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-launch makemkv'</command>
-      <startupnotify>
-        <enabled>yes</enabled>
-      </startupnotify>
-    </action>
-    </item>
+	<item label="MakeMKV">
+	<action name="Execute">
+	<command>/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-launch makemkv'</command>
+	<startupnotify>
+		<enabled>yes</enabled>
+	</startupnotify>
+	</action>
+	</item>
 EOF
-
+else
+cat <<'EOF' > /tmp/menu_heredoc
+	<item label="MakeMKV">
+	<action name="Execute">
+	<command>dbus-launch makemkv</command>
+	<startupnotify>
+		<enabled>yes</enabled>
+	</startupnotify>
+	</action>
+	</item>
+EOF
+fi
 # replace menu placeholder string with contents of file (here doc)
 sed -i '/<!-- APPLICATIONS_PLACEHOLDER -->/{
 	s/<!-- APPLICATIONS_PLACEHOLDER -->//g
