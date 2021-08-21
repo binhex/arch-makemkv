@@ -71,10 +71,26 @@ github.sh --install-path "${install_path}" --github-owner 'wolfcw' --github-repo
 # overwrite novnc 16x16 icon with application specific 16x16 icon (used by bookmarks and favorites)
 cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 
+cat <<'EOF' > /tmp/config_heredoc
+# set openbox menu command depending on env var
+if [[ -v EXTEND_TIME ]]; then
+	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>/bin/bash -c \x27LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-launch makemkv\x27</command>~g' '/home/nobody/.config/openbox/menu.xml'
+else
+	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>dbus-launch makemkv</command>~g' '/home/nobody/.config/openbox/menu.xml'
+fi
+EOF
+
+# replace config placeholder string with contents of file (here doc)
+sed -i '/# CONFIG_PLACEHOLDER/{
+	s/# CONFIG_PLACEHOLDER//g
+	r /tmp/config_heredoc
+}' /usr/local/bin/start.sh
+rm /tmp/config_heredoc
+
 cat <<'EOF' > /tmp/startcmd_heredoc
-# launch makemkv (we cannot simply call /usr/bin/makemkv otherwise it wont run on startup)
+# set startup command depending on env var
 # note failure to launch makemkv in the below manner will result in the classic xcb missing error
-if [[ -n "${EXTEND_TIME}" ]]; then
+if [[ -v EXTEND_TIME ]]; then
 	/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-run-session -- makemkv'
 else
 	dbus-run-session -- makemkv
@@ -90,18 +106,6 @@ rm /tmp/startcmd_heredoc
 
 # config openbox
 ####
-if [[ -n "${EXTEND_TIME}" ]]; then
-cat <<'EOF' > /tmp/menu_heredoc
-	<item label="MakeMKV">
-	<action name="Execute">
-	<command>/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-launch makemkv'</command>
-	<startupnotify>
-		<enabled>yes</enabled>
-	</startupnotify>
-	</action>
-	</item>
-EOF
-else
 cat <<'EOF' > /tmp/menu_heredoc
 	<item label="MakeMKV">
 	<action name="Execute">
@@ -112,7 +116,7 @@ cat <<'EOF' > /tmp/menu_heredoc
 	</action>
 	</item>
 EOF
-fi
+
 # replace menu placeholder string with contents of file (here doc)
 sed -i '/<!-- APPLICATIONS_PLACEHOLDER -->/{
 	s/<!-- APPLICATIONS_PLACEHOLDER -->//g
