@@ -55,7 +55,7 @@ fi
 ####
 
 # define aur packages
-aur_packages="ffmpeg-headless makemkv"
+aur_packages="ffmpeg-headless jdk14-openjdk makemkv"
 
 # unable to build ccextractor at this time due to incompatability with ffmpeg 5
 # see open issue:- https://github.com/CCExtractor/ccextractor/issues/1418
