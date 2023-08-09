@@ -42,7 +42,7 @@ fi
 source upd.sh
 
 # define pacman packages
-pacman_packages="usbutils"
+pacman_packages="usbutils jre-openjdk"
 
 if [[ ! -z "${pacman_packages}" ]]; then
 
