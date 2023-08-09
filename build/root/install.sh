@@ -44,11 +44,9 @@ source upd.sh
 # define pacman packages
 pacman_packages="usbutils jre-openjdk"
 
+# install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
-
-	echo "[info] Installing pacman package(s) '${pacman_packages}'"
-	pacman -S --needed "${pacman_packages}" --noconfirm
-
+	pacman -S --needed $pacman_packages --noconfirm
 fi
 
 # aur packages
