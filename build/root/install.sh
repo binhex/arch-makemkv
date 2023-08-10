@@ -53,11 +53,7 @@ fi
 ####
 
 # define aur packages
-aur_packages="ffmpeg-headless makemkv"
-
-# unable to build ccextractor at this time due to incompatability with ffmpeg 5
-# see open issue:- https://github.com/CCExtractor/ccextractor/issues/1418
-#ccextractor
+aur_packages="makemkv ccextractor"
 
 # call aur install script (arch user repo)
 source aur.sh
