@@ -4,7 +4,10 @@
 set -e
 
 # release tag name from build arg, stripped of build ver using string manipulation
-release_tag_name="${1//-[0-9][0-9]/}"
+RELEASETAG="${1//-[0-9][0-9]/}"
+
+# get target arch from Dockerfile argument
+TARGETARCH="${2}"
 
 # build scripts
 ####
@@ -18,22 +21,6 @@ unzip /tmp/scripts-master.zip -d /tmp
 # move shell scripts to /usr/local/bin (-n = do not overwrite
 # exsting files, required as init.sh written to via arch-int-gui)
 mv -n /tmp/scripts-master/shell/arch/docker/*.sh /usr/local/bin/ || true
-
-# detect image arch
-####
-
-OS_ARCH=$(cat /etc/os-release | grep -P -o -m 1 "(?=^ID\=).*" | grep -P -o -m 1 "[a-z]+$")
-if [[ ! -z "${OS_ARCH}" ]]; then
-	if [[ "${OS_ARCH}" == "arch" ]]; then
-		OS_ARCH="x86-64"
-	else
-		OS_ARCH="aarch64"
-	fi
-	echo "[info] OS_ARCH defined as '${OS_ARCH}'"
-else
-	echo "[warn] Unable to identify OS_ARCH, defaulting to 'x86-64'"
-	OS_ARCH="x86-64"
-fi
 
 # pacman packages
 ####
