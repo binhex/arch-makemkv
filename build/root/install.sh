@@ -19,12 +19,6 @@ if [[ -z "${TARGETARCH}" ]]; then
 	exit 1
 fi
 
-# get target arch from Dockerfile argument
-TARGETARCH="${2}"
-
-# build scripts
-####
-
 # download build scripts from github
 curl --connect-timeout 5 --max-time 600 --retry 5 --retry-delay 0 --retry-max-time 60 -o /tmp/scripts-master.zip -L https://github.com/binhex/scripts/archive/master.zip
 
