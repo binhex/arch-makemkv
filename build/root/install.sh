@@ -4,7 +4,7 @@
 set -e
 
 # release tag name from buildx arg, stripped of build ver using string manipulation
-RELEASETAG="${1//-[0-9][0-9]/}"
+RELEASETAG="${1}"
 
 # target arch from buildx arg
 TARGETARCH="${2}"
@@ -18,6 +18,9 @@ if [[ -z "${TARGETARCH}" ]]; then
 	echo "[warn] Target architecture name from build arg is empty, exiting script..."
 	exit 1
 fi
+
+# write RELEASETAG to file to record the release tag used to build the image
+echo "IMAGE_RELEASE_TAG=${RELEASETAG}" >> '/etc/image-release'
 
 # download build scripts from github
 curl --connect-timeout 5 --max-time 600 --retry 5 --retry-delay 0 --retry-max-time 60 -o /tmp/scripts-master.zip -L https://github.com/binhex/scripts/archive/master.zip
