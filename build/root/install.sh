@@ -43,7 +43,7 @@ refresh.sh
 source upd.sh
 
 # define pacman packages
-pacman_packages="usbutils jre-openjdk"
+pacman_packages="usbutils jre-openjdk llvm-libs"
 
 # install compiled packages using pacman
 if [[ -n "${pacman_packages}" ]]; then
@@ -79,8 +79,8 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 
 cat <<'EOF' > /tmp/config_heredoc
 # set openbox menu command depending on env var
-if [[ -v EXTEND_TIME ]]; then
-	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>/bin/bash -c \x27LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-launch makemkv\x27</command>~g' '/home/nobody/.config/openbox/menu.xml'
+if [[ -n "${EXTEND_TIME}" ]]; then
+	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>/bin/bash -c \x27LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-${EXTEND_TIME}d" dbus-launch makemkv\x27</command>~g' '/home/nobody/.config/openbox/menu.xml'
 else
 	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>dbus-launch makemkv</command>~g' '/home/nobody/.config/openbox/menu.xml'
 fi
@@ -96,8 +96,8 @@ rm /tmp/config_heredoc
 cat <<'EOF' > /tmp/startcmd_heredoc
 # set startup command depending on env var
 # note failure to launch makemkv in the below manner will result in the classic xcb missing error
-if [[ -v EXTEND_TIME ]]; then
-	/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-3000d" dbus-run-session -- makemkv'
+if [[ -n "${EXTEND_TIME}" ]]; then
+	/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-${EXTEND_TIME}d" dbus-run-session -- makemkv'
 else
 	dbus-run-session -- makemkv
 fi
