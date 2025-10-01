@@ -80,7 +80,8 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 cat <<'EOF' > /tmp/config_heredoc
 # set openbox menu command depending on env var
 if [[ -n "${EXTEND_TIME}" ]]; then
-	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>/bin/bash -c \x27LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-${EXTEND_TIME}d" dbus-launch makemkv\x27</command>~g' '/home/nobody/.config/openbox/menu.xml'
+	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>/bin/bash -c \x27/usr/local/bin/faketime "${EXTEND_TIME}" dbus-launch makemkv\x27</command>~g' '/home/nobody/.config/openbox/menu.xml'
+	faketime '2008-12-24 08:15:42'
 else
 	sed -i -e 's~<command>.*dbus-launch makemkv.*</command>~<command>dbus-launch makemkv</command>~g' '/home/nobody/.config/openbox/menu.xml'
 fi
@@ -97,7 +98,7 @@ cat <<'EOF' > /tmp/startcmd_heredoc
 # set startup command depending on env var
 # note failure to launch makemkv in the below manner will result in the classic xcb missing error
 if [[ -n "${EXTEND_TIME}" ]]; then
-	/bin/bash -c 'LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 FAKETIME="-${EXTEND_TIME}d" dbus-run-session -- makemkv'
+	/bin/bash -c '/usr/local/bin/faketime "${EXTEND_TIME}" dbus-run-session -- makemkv'
 else
 	dbus-run-session -- makemkv
 fi
