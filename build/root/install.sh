@@ -69,7 +69,7 @@ aur.sh --aur-package "${aur_packages}"
 install_path="/tmp"
 
 # download faketime from branch master
-github.sh --install-path "${install_path}" --github-owner 'wolfcw' --github-repo 'libfaketime' --query-type 'release' --download-branch 'master' --compile-src 'make install'
+github.sh --install-path "${install_path}" --github-owner 'wolfcw' --github-repo 'libfaketime' --query-type 'branch' --download-branch 'master' --compile-src 'make install'
 
 # config novnc
 ###
