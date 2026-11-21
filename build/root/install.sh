@@ -58,7 +58,7 @@ fi
 ####
 
 # define aur packages
-aur_packages="makemkv,ccextractor"
+aur_packages="makemkv,ccextractor,makemkv-libaacs"
 
 # call aur install script (arch user repo)
 aur.sh --aur-package "${aur_packages}"
